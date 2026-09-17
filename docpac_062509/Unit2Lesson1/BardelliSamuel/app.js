@@ -1,10 +1,23 @@
 require('dotenv').config()
-const http = require('http')
+const express = require('express')
+const app = express()
+const name = process.env.APP_NAME
+const port = process.env.PORT
+
+app.use(express.static('public'))
+
+app.listen(port, () => {
+    console.log('Server started at port:', port)
+})
+
+
+
+/////////////////////////////////////Original HTTP Server//////////////////////////////////////
+/*const http = require('http')
 const fs = require('fs')
 const url = require('url')
 
-const name = process.env.APP_NAME
-const port = process.env.PORT
+
 let formPage
 fs.readFile('./pages/form.html', 'utf8', (err, data) => {
     if (err) {
@@ -78,3 +91,4 @@ http.createServer((req, res) => {
         }
     }
 }).listen(port)
+*/
