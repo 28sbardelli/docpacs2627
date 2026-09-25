@@ -15,7 +15,7 @@ app.use(express.urlencoded({
 
 
 app.get('/', (req, res) => {
-    res.send('<p>A basic server using express bodyparsing</p><a href="form.html">The form page</a>')
+    res.sendFile(path.join(__dirname, '/public/homepage.html'))
 })
 
 app.get('/form', (req, res) => {
@@ -29,9 +29,7 @@ app.post('/form', (req, res) => {
         res.send(`Your name is: ${req.body.name}`)
     }
     else {
-        res.writeHead(400)
-        res.write('Please enter a valid string into the input')
-        res.end()
+        res.status(400).send('Please enter a valid string into the input')
     }
 })
 
@@ -42,9 +40,7 @@ app.get('/query', (req, res) => {
         res.send(`Your message was: ${req.query.message}`)
     }
     else {
-        res.writeHead(400)
-        res.write('Please enter a valid message,    Format: /query?message=message')
-        res.end()
+        res.status(400).send('Please enter a valid message,    Format: /query?message=message')
     }
 })
 
@@ -53,11 +49,14 @@ app.get('/urlparams/:example', (req, res) => {
     if (req.params.example && req.params.example.trim()) {
         res.send(`Your parameter was: ${req.params.example}`)
     }
-    else{
-        res.writeHead(400)
-        res.write('Please enter a valid message,    Format: /urlparams/param')
-        res.end()
-    }
+})
+
+app.get('/urlparams', (req, res) => {
+    res.status(400).send('Please enter a valid message,    Format: /urlparams/param')
+})
+
+app.all(`*path`, (req, res) => {
+    res.status(404).send('404 Page not found')
 })
 
 app.listen(port, () => {
