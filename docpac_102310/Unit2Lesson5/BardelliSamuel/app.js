@@ -7,7 +7,6 @@ const {pageRoutes} = require('./routes/pageRoutes')
 const {formRoutes} = require('./routes/formRoutes')
 const {parameterRoutes} = require('./routes/parameterRoutes')
 const path = require('path')
-
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 
@@ -25,7 +24,16 @@ app.use(parameterRoutes)
 
 
 app.all(`*path`, (req, res) => {
-    res.status(404).send('404 Page not found')
+    res.status(404).render('error', {
+        title: 'error',
+        message: 'Incorrect page',
+        code: res.statusCode,
+        href: '/',
+        navs: [
+            {'href': '/', 'text': 'Home'},
+            {'href': '/form', 'text': 'form page'}
+        ]
+    })
 })
 
 app.listen(port, () => {
